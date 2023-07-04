@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "360214200595",
+    "project_id": "sehirli-17894",
+    "storage_bucket": "sehirli-17894.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360214200595:android:c2653084e7425911885ae6",
+        "android_client_info": {
+          "package_name": "com.emirs.sehirli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360214200595-1rleq7ekp9qaq4edro7u62cf3ahon2gf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emirs.sehirli",
+            "certificate_hash": "91f1bb963640ddef8f2f0a4cb7eeda9ee1f0c4b4"
+          }
+        },
+        {
+          "client_id": "360214200595-3m1b9mrnqq9dqs6d50fuq8jq8varknnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXBvRRkld0wYW4GXeiKiW9_Lf0e8n0ozY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360214200595-3m1b9mrnqq9dqs6d50fuq8jq8varknnt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "360214200595-fd74l4eqhapo0lv347coi2rhkq9m6kgh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.emirs.sehirli"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
