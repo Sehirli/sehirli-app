@@ -14,7 +14,6 @@ import 'package:sehirli/widgets/event_page/event_page_map.dart';
 class EventPage extends StatefulWidget {
   final Event event;
 
-
   const EventPage({super.key, required this.event});
 
   @override
