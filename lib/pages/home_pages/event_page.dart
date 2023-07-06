@@ -10,6 +10,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:sehirli/models/event.dart';
 import 'package:sehirli/widgets/event_page/event_page_map.dart';
+import 'package:sehirli/widgets/event_page/report_button.dart';
 
 class EventPage extends StatefulWidget {
   final Event event;
@@ -72,9 +73,15 @@ class _EventPageState extends State<EventPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    DateFormat("dd.MM.yyyy HH:mm:ss").format(widget.event.timestamp.toDate()),
-                    style: const TextStyle(fontSize: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        DateFormat("dd.MM.yyyy HH:mm:ss").format(widget.event.timestamp.toDate()),
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      ReportButton(eventId: widget.event.id)
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10, top: 10),
@@ -82,7 +89,7 @@ class _EventPageState extends State<EventPage> {
                       height: _bannerAd!.size.height.toDouble(),
                       width: _bannerAd!.size.width.toDouble(),
                       child: AdWidget(
-                          ad: _bannerAd!
+                        ad: _bannerAd!
                       )
                     ),
                   ),

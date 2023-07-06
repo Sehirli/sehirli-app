@@ -29,4 +29,16 @@ class Database {
       throw Exception();
     }
   }
+
+  Future<void> reportEvent(String reportedBy, String eventId, String reason) async {
+    try {
+      await db.collection("reports").doc(eventId).set({
+        "reportedBy": reportedBy,
+        "reason": reason,
+        "reportedAt": Timestamp.now()
+      });
+    } catch (exception) {
+      throw Exception(exception.toString());
+    }
+  }
 }
