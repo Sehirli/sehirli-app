@@ -28,6 +28,7 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   BannerAd? _bannerAd;
   late List comments;
+  bool? firstRun;
 
   void loadAd() {
     _bannerAd = BannerAd(
@@ -115,20 +116,7 @@ class _EventPageState extends State<EventPage> {
                     const SizedBox(height: 10),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: FutureBuilder(
-                        future: Database().getComments(widget.event.id),
-                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(child: CupertinoActivityIndicator());
-                          }
-
-                          return CommentsColumn(
-                            event: widget.event,
-                            comments: snapshot.data,
-                            callback: updateComments,
-                          );
-                        }
-                      ),
+                      child: buildComments()
                     ),
                   ],
                 ),
@@ -143,5 +131,31 @@ class _EventPageState extends State<EventPage> {
   void updateComments() async {
     comments = await Database().getComments(widget.event.id);
     setState(() {});
+  }
+
+  Widget buildComments() {
+    if (firstRun == null || firstRun == true) {
+      firstRun = false;
+      return CommentsColumn(
+        event: widget.event,
+        comments: widget.event.comments,
+        callback: updateComments,
+      );
+    } else {
+      return FutureBuilder(
+        future: Database().getComments(widget.event.id),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CupertinoActivityIndicator());
+          }
+
+          return CommentsColumn(
+            event: widget.event,
+            comments: snapshot.data,
+            callback: updateComments,
+          );
+        }
+      );
+    }
   }
 }
