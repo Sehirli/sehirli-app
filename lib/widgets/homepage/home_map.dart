@@ -8,7 +8,6 @@ import 'package:sehirli/pages/home_pages/event_page.dart';
 import 'package:sehirli/utils/database.dart';
 import 'package:sehirli/utils/location.dart';
 import 'package:sehirli/widgets/error_map.dart';
-import 'package:sehirli/widgets/homepage/home_map/filter_button.dart';
 import 'package:sehirli/widgets/homepage/home_map/move_location.dart';
 import 'package:sehirli/widgets/homepage/home_map/osm_copyright.dart';
 import 'package:sehirli/widgets/homepage/home_map/refresh_map.dart';

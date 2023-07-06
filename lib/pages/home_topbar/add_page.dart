@@ -146,6 +146,16 @@ class _AddPageState extends State<AddPage> {
                   PhotoSelector(onPressed: onPhotoSelectorPressed),
                   const SizedBox(height: 5),
                   buildImagesView(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10, top: 10),
+                    child: SizedBox(
+                      height: _bannerAd!.size.height.toDouble(),
+                      width: _bannerAd!.size.width.toDouble(),
+                      child: AdWidget(
+                        ad: _bannerAd!
+                      )
+                    ),
+                  ),
                 ],
               ),
             ),

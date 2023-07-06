@@ -41,4 +41,32 @@ class Database {
       throw Exception(exception.toString());
     }
   }
+
+  Future<void> removeComment(String eventId, List commentsList) async {
+    try {
+      await db.collection("events").doc(eventId).update({
+        "comments": commentsList
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> addComment(String eventId, List commentsList) async {
+    try {
+      await db.collection("events").doc(eventId).update({
+        "comments": commentsList
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List> getComments(String eventId) async {
+    try {
+      return (await db.collection("events").doc(eventId).get())["comments"];
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

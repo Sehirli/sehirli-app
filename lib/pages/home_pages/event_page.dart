@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:sehirli/models/event.dart';
+import 'package:sehirli/utils/database.dart';
 import 'package:sehirli/widgets/event_page/comments_column.dart';
 import 'package:sehirli/widgets/event_page/event_page_map.dart';
 import 'package:sehirli/widgets/event_page/report_button.dart';
@@ -26,6 +27,7 @@ class EventPage extends StatefulWidget {
 
 class _EventPageState extends State<EventPage> {
   BannerAd? _bannerAd;
+  late List comments;
 
   void loadAd() {
     _bannerAd = BannerAd(
@@ -47,6 +49,7 @@ class _EventPageState extends State<EventPage> {
   void initState() {
     super.initState();
     loadAd();
+    comments = widget.event.comments;
   }
 
   @override
@@ -72,49 +75,73 @@ class _EventPageState extends State<EventPage> {
           EventPageMap(point: point),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        DateFormat("dd.MM.yyyy HH:mm:ss").format(widget.event.timestamp.toDate()),
-                        style: const TextStyle(fontSize: 20),
+              padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          DateFormat("dd.MM.yyyy HH:mm").format(widget.event.timestamp.toDate()),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        Row(
+                          children: [
+                            ReportButton(eventId: widget.event.id),
+                            CommentButton(
+                              eventId: widget.event.id,
+                              comments: comments,
+                              callback: () => setState(() {})
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10, top: 10),
+                      child: SizedBox(
+                        height: _bannerAd!.size.height.toDouble(),
+                        width: _bannerAd!.size.width.toDouble(),
+                        child: AdWidget(
+                          ad: _bannerAd!
+                        )
                       ),
-                      Row(
-                        children: [
-                          ReportButton(eventId: widget.event.id),
-                          CommentButton(eventId: widget.event.id)
-                        ],
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10, top: 10),
-                    child: SizedBox(
-                      height: _bannerAd!.size.height.toDouble(),
-                      width: _bannerAd!.size.width.toDouble(),
-                      child: AdWidget(
-                        ad: _bannerAd!
-                      )
                     ),
-                  ),
-                  const Divider(),
-                  Text(widget.event.description, style: const TextStyle(fontSize: 18)),
-                  Expanded(
-                    child: Align(
+                    const Divider(),
+                    Text(widget.event.description, style: const TextStyle(fontSize: 18)),
+                    const SizedBox(height: 10),
+                    Align(
                       alignment: Alignment.bottomCenter,
-                      child: CommentsColumn(comments: widget.event.comments)
+                      child: FutureBuilder(
+                        future: Database().getComments(widget.event.id),
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(child: CupertinoActivityIndicator());
+                          }
+
+                          return CommentsColumn(
+                            event: widget.event,
+                            comments: snapshot.data,
+                            callback: updateComments,
+                          );
+                        }
+                      ),
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  void updateComments() async {
+    comments = await Database().getComments(widget.event.id);
+    setState(() {});
   }
 }
