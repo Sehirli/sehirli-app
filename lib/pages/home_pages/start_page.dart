@@ -43,7 +43,7 @@ class StartPage extends StatelessWidget {
               CustomButton(
                 onPressed: () {
                   HapticFeedback.lightImpact();
-                  Get.to(() => Register());
+                  Get.to(() => const Register());
                 },
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,

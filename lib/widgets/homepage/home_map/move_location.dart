@@ -21,7 +21,7 @@ class MoveLocation extends StatelessWidget {
         heroTag: "go_to_current_location",
         backgroundColor: Colors.black,
         child: const Icon(Icons.my_location, color: Colors.white),
-        onPressed: () => mapController.move(location, 15),
+        onPressed: () => mapController.move(location, 14),
       ),
     );
   }
