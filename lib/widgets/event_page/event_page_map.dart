@@ -8,7 +8,7 @@ import 'package:sehirli/widgets/homepage/home_map/osm_copyright.dart';
 class EventPageMap extends StatelessWidget {
   final LatLng point;
 
-  EventPageMap({super.key, required this.point});
+  const EventPageMap({super.key, required this.point});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +31,13 @@ class EventPageMap extends StatelessWidget {
             markers: [
               Marker(
                 point: point,
+                width: 35,
+                height: 35,
                 builder: (BuildContext context) {
                   return const Icon(
-                    Icons.location_pin,
+                    Icons.my_location_rounded,
                     color: Colors.black,
-                    size: 40
+                    size: 35
                   );
                 }
               )

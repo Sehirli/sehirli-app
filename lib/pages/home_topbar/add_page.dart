@@ -146,19 +146,6 @@ class _AddPageState extends State<AddPage> {
                   PhotoSelector(onPressed: onPhotoSelectorPressed),
                   const SizedBox(height: 5),
                   buildImagesView(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        height: _bannerAd!.size.height.toDouble(),
-                        width: _bannerAd!.size.width.toDouble(),
-                        child: AdWidget(
-                          ad: _bannerAd!
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -309,7 +296,8 @@ class _AddPageState extends State<AddPage> {
           addedBy: FirebaseAuth.instance.currentUser!.phoneNumber!,
           eventType: eventTypeSelectorKey.currentState!.eventType?.event ?? EventType.other.event,
           timestamp: Timestamp.now(),
-          geoPoint: geoPoint!
+          geoPoint: geoPoint!,
+          comments: []
         ));
 
         uploadImages(id);

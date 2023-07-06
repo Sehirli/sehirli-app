@@ -9,8 +9,11 @@ import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:sehirli/models/event.dart';
+import 'package:sehirli/widgets/event_page/comments_column.dart';
 import 'package:sehirli/widgets/event_page/event_page_map.dart';
 import 'package:sehirli/widgets/event_page/report_button.dart';
+
+import '../../widgets/event_page/comment_button.dart';
 
 class EventPage extends StatefulWidget {
   final Event event;
@@ -67,9 +70,9 @@ class _EventPageState extends State<EventPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           EventPageMap(point: point),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: SingleChildScrollView(
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -80,7 +83,12 @@ class _EventPageState extends State<EventPage> {
                         DateFormat("dd.MM.yyyy HH:mm:ss").format(widget.event.timestamp.toDate()),
                         style: const TextStyle(fontSize: 20),
                       ),
-                      ReportButton(eventId: widget.event.id)
+                      Row(
+                        children: [
+                          ReportButton(eventId: widget.event.id),
+                          CommentButton(eventId: widget.event.id)
+                        ],
+                      )
                     ],
                   ),
                   Padding(
@@ -94,7 +102,13 @@ class _EventPageState extends State<EventPage> {
                     ),
                   ),
                   const Divider(),
-                  Text(widget.event.description, style: const TextStyle(fontSize: 18))
+                  Text(widget.event.description, style: const TextStyle(fontSize: 18)),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: CommentsColumn(comments: widget.event.comments)
+                    ),
+                  )
                 ],
               ),
             ),

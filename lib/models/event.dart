@@ -8,6 +8,7 @@ class Event {
   final Timestamp timestamp;
   final GeoPoint geoPoint;
   final String eventType;
+  final List comments;
 
   Event({
     required this.id,
@@ -16,7 +17,8 @@ class Event {
     required this.timestamp,
     required this.description,
     required this.geoPoint,
-    required this.eventType
+    required this.eventType,
+    required this.comments
   });
 
   factory Event.fromJson(Map<String, dynamic> data) {
@@ -27,7 +29,8 @@ class Event {
       description: data["description"],
       timestamp: data["timestamp"],
       geoPoint: data["geoPoint"],
-      eventType: data["eventType"]
+      eventType: data["eventType"],
+      comments: data["comments"],
     );
   }
 
@@ -39,7 +42,8 @@ class Event {
       "description": description,
       "timestamp": timestamp,
       "geoPoint": geoPoint,
-      "eventType": eventType
+      "eventType": eventType,
+      "comments": comments
     };
   }
 }
