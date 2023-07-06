@@ -138,7 +138,7 @@ class _SmsCodePageState extends State<SmsCodePage> {
                       } else {
                         Get.snackbar(
                           "Hata!",
-                          "Lütfen geliştiricilere bu hatayı bildirin.",
+                          "Lütfen geçerli bir SMS kodu girin!",
                           colorText: Colors.white,
                           icon: const Icon(Icons.warning_amber, color: Colors.red),
                         );

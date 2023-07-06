@@ -27,11 +27,15 @@ class Authentication extends GetxController {
   }
 
   Future<bool> verifyOTP(String smsCode) async {
-    UserCredential credential = await auth.signInWithCredential(PhoneAuthProvider.credential(
+    try {
+      UserCredential credential = await auth.signInWithCredential(PhoneAuthProvider.credential(
         verificationId: verificationId.value,
         smsCode: smsCode
-    ));
+      ));
 
-    return credential.user != null;
+      return credential.user != null;
+    } catch (e) {
+      return false;
+    }
   }
 }
