@@ -34,6 +34,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       maxLength: maxLength,
       maxLines: maxLines,
+      textCapitalization: TextCapitalization.sentences,
       style: TextStyle(
         fontFamily: fontFamily,
         color: Colors.white
