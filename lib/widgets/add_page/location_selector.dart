@@ -19,6 +19,9 @@ class LocationSelector extends StatelessWidget {
     )
   );
 
+  late LatLong currentLocation;
+  late double zoom;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +39,11 @@ class LocationSelector extends StatelessWidget {
           var data = snapshot.data;
 
           if (data == null) {
-            return const ErrorMap();
+            currentLocation = LatLong(39.221536, 34.614446);
+            zoom = 5;
+          } else {
+            currentLocation = LatLong(data.latitude, data.longitude);
+            zoom = 11;
           }
 
           return FlutterLocationPicker(
@@ -51,7 +58,7 @@ class LocationSelector extends StatelessWidget {
             showContributorBadgeForOSM: true,
             contributorBadgeForOSMPositionRight: MediaQuery.of(context).size.width / 2,
             searchBarHintText: "Bir konum aratın",
-            initZoom: 11,
+            initZoom: zoom,
             locationButtonsColor: Colors.white,
             locationButtonBackgroundColor: Colors.black,
             zoomButtonsBackgroundColor: Colors.black,
@@ -59,7 +66,7 @@ class LocationSelector extends StatelessWidget {
             minZoomLevel: 5,
             maxZoomLevel: 16,
             mapLanguage: "tr",
-            initPosition: LatLong(data.latitude, data.longitude),
+            initPosition: currentLocation,
             showCurrentLocationPointer: false,
             onPicked: onPicked,
             contributorBadgeForOSMColor: Colors.black,

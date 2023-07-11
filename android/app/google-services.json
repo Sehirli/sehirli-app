@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "360214200595-1rleq7ekp9qaq4edro7u62cf3ahon2gf.apps.googleusercontent.com",
+          "client_id": "360214200595-305u835141975ng3ejs2rpi2tr5agn3j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.emirs.sehirli",
-            "certificate_hash": "91f1bb963640ddef8f2f0a4cb7eeda9ee1f0c4b4"
+            "certificate_hash": "747c16f24d9145b88496a0c1fdf53d11b8fcdb23"
+          }
+        },
+        {
+          "client_id": "360214200595-irfb26b1i2otfh83gjvh8qbnrt0irmae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emirs.sehirli",
+            "certificate_hash": "4f2f5e0597ac0086498f5cbc13f2dd2e22341aa6"
+          }
+        },
+        {
+          "client_id": "360214200595-krsfae0rqm6c7k50ososh0msetsu1id7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emirs.sehirli",
+            "certificate_hash": "ebb3e6575baefd6b5d208875c76293f4fd4710d5"
           }
         },
         {
