@@ -13,23 +13,12 @@ import 'package:sehirli/widgets/custom_button.dart';
 import 'package:sehirli/pages/home_pages/start_page.dart';
 import 'package:sehirli/widgets/custom_textfield.dart';
 
-class DeleteAccountWidget extends StatefulWidget {
-
+class DeleteAccountWidget extends StatelessWidget {
   DeleteAccountWidget({super.key});
 
-  @override
-  State<DeleteAccountWidget> createState() => _DeleteAccountWidgetState();
-}
-
-class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
   final TextEditingController controller = TextEditingController();
 
   final CountdownController countdownController = CountdownController();
-
-  Widget child =  const Text("Tamam", style: TextStyle(
-    fontSize: 19,
-    color: Colors.red,
-  ));
 
   @override
   Widget build(BuildContext context) {
@@ -67,90 +56,7 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
 
                     Authentication.instance.sendSMS(FirebaseAuth.instance.currentUser!.phoneNumber!);
 
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          backgroundColor: Colors.red,
-                          title: const Text("SMS kodu"),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text("Sana doğrulama için bir SMS kodu gönderdik."),
-                              CustomTextField(
-                                controller: controller,
-                                counter: countdown(context)
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            CustomButton(
-                              onPressed: () {
-                                HapticFeedback.lightImpact();
-
-                                countdownController.pause();
-                                Navigator.pop(context);
-                              },
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.red,
-                              text: "Vazgeç",
-                            ),
-                            CustomButton(
-                              onPressed: () async {
-                                setState(() {
-                                  child = const CupertinoActivityIndicator();
-                                });
-
-                                User user = FirebaseAuth.instance.currentUser!;
-
-                                bool verified = await Authentication.instance.reAuthenticate(controller.text);
-
-                                if (verified) {
-                                  if (context.mounted) {
-                                    Navigator.pop(context);
-
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                          color: Colors.black.withOpacity(.5),
-                                          child: const Center(child: CircularProgressIndicator())
-                                        );
-                                      },
-                                    );
-
-                                    Navigator.pop(context);
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (_) => const StartPage()
-                                      ),
-                                      (route) => false
-                                    );
-                                  }
-
-                                  if (user.photoURL! != "https://i.imgur.com/YY9AfMh.png") {
-                                    await FirebaseStorage.instance.refFromURL(user.photoURL!).delete();
-                                  }
-
-                                  await user.delete();
-                                } else {
-                                  setState(() {
-                                    child = const Text("Tamam", style: TextStyle(
-                                      fontSize: 19,
-                                      color: Colors.red,
-                                    ));
-                                  });
-                                }
-                              },
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.red,
-                              child: child,
-                            ),
-                          ],
-                        );
-                      }
-                    );
+                    smsCodeDialog(context);
                   },
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.red,
@@ -192,6 +98,115 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
         );
         Navigator.pop(context);
       },
+    );
+  }
+
+  void smsCodeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Widget child =  const Text("Tamam", style: TextStyle(
+          fontSize: 19,
+          color: Colors.red,
+        ));
+        bool enabled = true;
+
+        return AlertDialog(
+          backgroundColor: Colors.red,
+          title: const Text("SMS kodu"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Sana doğrulama için bir SMS kodu gönderdik."),
+              CustomTextField(
+                  controller: controller,
+                  maxLength: 6,
+                  counter: countdown(context)
+              ),
+            ],
+          ),
+          actions: [
+            CustomButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+
+                countdownController.pause();
+                Navigator.pop(context);
+              },
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.red,
+              text: "Vazgeç",
+            ),
+            StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return CustomButton(
+                  onPressed: () async {
+                    if (enabled) {
+                      setState(() {
+                        child = const CupertinoActivityIndicator();
+                        enabled = false;
+                      });
+
+                      User user = FirebaseAuth.instance.currentUser!;
+
+                      bool verified = await Authentication.instance.reAuthenticate(controller.text);
+
+                      if (verified) {
+                        if (context.mounted) {
+                          Navigator.pop(context);
+
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return Container(
+                                  color: Colors.black.withOpacity(.5),
+                                  child: const Center(child: CircularProgressIndicator())
+                              );
+                            },
+                          );
+
+                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (_) => const StartPage()
+                            ),
+                            (route) => false
+                          );
+                        }
+
+                        if (user.photoURL! != "https://i.imgur.com/YY9AfMh.png") {
+                          await FirebaseStorage.instance.refFromURL(user.photoURL!).delete();
+                        }
+
+                        await user.delete();
+                      } else {
+                        Get.snackbar(
+                          "Hata!",
+                          "Lütfen geçerli bir SMS kodu girin!",
+                          colorText: Colors.white,
+                          icon: const Icon(Icons.warning_amber, color: Colors.red),
+                        );
+
+                        setState(() {
+                          child = const Text("Tamam", style: TextStyle(
+                            fontSize: 19,
+                            color: Colors.red,
+                          ));
+                          enabled = true;
+                        });
+                      }
+                    }
+                  },
+                  backgroundColor: enabled ? Colors.white : Colors.grey,
+                  foregroundColor: Colors.red,
+                  child: child,
+                );
+              },
+            ),
+          ],
+        );
+      }
     );
   }
 }
