@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,6 +112,7 @@ class _EventPageState extends State<EventPage> {
                         )
                       ),
                     ),
+                    buildImagesView(),
                     const Divider(),
                     Text(widget.event.description, style: const TextStyle(fontSize: 18)),
                     const SizedBox(height: 10),
@@ -157,5 +159,48 @@ class _EventPageState extends State<EventPage> {
         }
       );
     }
+  }
+
+  Widget buildImagesView() {
+    return FutureBuilder(
+      future: getImages(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CupertinoActivityIndicator());
+        }
+
+        List<Uint8List> items = snapshot.data;
+
+        if (items.isEmpty) {
+          return const SizedBox();
+        }
+
+        return SizedBox(
+          height: 150,
+          child: ListView.builder(
+            itemCount: items.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Image.memory(items[index]!),
+              );
+            }
+          ),
+        );
+      }
+    );
+  }
+
+  Future<List<Uint8List>> getImages() async {
+    List<Uint8List> imagesList = [];
+
+    List<Reference> items = (await FirebaseStorage.instance.ref().child("events/${widget.event.id}").listAll()).items;
+
+    for (var item in items) {
+      imagesList.add((await item.getData())!);
+    }
+
+    return imagesList;
   }
 }

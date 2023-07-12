@@ -348,9 +348,11 @@ class _AddPageState extends State<AddPage> {
         child: ListView.builder(
           itemCount: imagesList.length,
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.only(right: 5),
           itemBuilder: (BuildContext context, int index) {
-            return Image.file(File(imagesList[index].path));
+            return Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Image.file(File(imagesList[index].path)),
+            );
           }
         ),
       );
