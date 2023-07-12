@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class Authentication extends GetxController {
@@ -18,6 +19,10 @@ class Authentication extends GetxController {
         } else if (e.code == "invalid-credential") {
           throw Exception("Invalid SMS code.");
         }
+
+        if (kDebugMode) {
+          print(e.code);
+        }
       },
       codeSent: (String verificationId, int? resendToken) async {
         this.verificationId.value = verificationId;
@@ -29,6 +34,19 @@ class Authentication extends GetxController {
   Future<bool> verifyOTP(String smsCode) async {
     try {
       UserCredential credential = await auth.signInWithCredential(PhoneAuthProvider.credential(
+        verificationId: verificationId.value,
+        smsCode: smsCode
+      ));
+
+      return credential.user != null;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> reAuthenticate(String smsCode) async {
+    try {
+      UserCredential credential = await auth.currentUser!.reauthenticateWithCredential(PhoneAuthProvider.credential(
         verificationId: verificationId.value,
         smsCode: smsCode
       ));

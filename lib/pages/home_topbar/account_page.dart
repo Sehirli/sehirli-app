@@ -8,6 +8,7 @@ import 'package:sehirli/widgets/account_page/change_pfp.dart';
 import 'package:sehirli/widgets/account_page/change_username.dart';
 import 'package:sehirli/widgets/account_page/sign_out_widget.dart';
 import 'package:sehirli/widgets/custom_button.dart';
+import 'package:sehirli/widgets/account_page/delete_account_widget.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -46,10 +47,16 @@ class _AccountPageState extends State<AccountPage> {
                 foregroundColor: Colors.black,
                 text: "Kullanıcı Adını Değiştir"
               ),
-              const Expanded(
+              Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: SignOutWidget(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const SignOutWidget(),
+                      DeleteAccountWidget()
+                    ],
+                  ),
                 ),
               )
             ],

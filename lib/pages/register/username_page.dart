@@ -94,7 +94,7 @@ class UsernamePage extends StatelessWidget {
                             icon: const Icon(Icons.verified_outlined, color: Colors.green)
                           );
 
-                          await FirebaseAuth.instance.currentUser!.updatePhotoURL("https://firebasestorage.googleapis.com/v0/b/sehirli-17894.appspot.com/o/sehirli-default.png?alt=media&token=7b5328a3-e473-4a15-af4c-1edf8b28a89d");
+                          await FirebaseAuth.instance.currentUser!.updatePhotoURL("https://i.imgur.com/YY9AfMh.png");
                           Get.to(() => const HomePage());
                         });
 

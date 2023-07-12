@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,6 +13,8 @@ class SignOutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomButton(
       onPressed: () {
+        HapticFeedback.lightImpact();
+
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -60,8 +63,8 @@ class SignOutWidget extends StatelessWidget {
           }
         );
       },
-      backgroundColor: Colors.red,
-      foregroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
       text: "Çıkış Yap"
     );
   }

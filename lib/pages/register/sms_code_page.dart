@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sehirli/pages/home_pages/home_page.dart';
 
+import 'package:sehirli/pages/home_pages/home_page.dart';
 import 'package:sehirli/pages/register/username_page.dart';
 import 'package:sehirli/utils/authentication.dart';
 import 'package:sehirli/widgets/custom_button.dart';
 import 'package:sehirli/widgets/custom_textfield.dart';
 import 'package:sehirli/pages/home_pages/start_page.dart';
-import 'package:timer_count_down/timer_controller.dart';
 
+import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -85,12 +85,14 @@ class _SmsCodePageState extends State<SmsCodePage> {
                         shouldIconPulse: false,
                         duration: const Duration(seconds: 5)
                       );
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (_) => const StartPage()
-                        ),
-                        (route) => false
-                      );
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (_) => const StartPage()
+                          ),
+                          (route) => false
+                        );
+                      });
                     },
                   ),
                 ),
